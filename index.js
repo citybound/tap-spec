@@ -44,6 +44,7 @@ module.exports = function (spec) {
     var glyph = symbols.cross;
     var title =  glyph + ' ' + assertion.name;
     var raw = format.cyan(prettifyRawError(assertion.error.raw));
+    var stack = assertion.error.stack && format.cyan(assertion.error.stack);
     var divider = _.fill(
       new Array((title).length + 1),
       '-'
@@ -52,6 +53,9 @@ module.exports = function (spec) {
     output.push('\n' + pad('  ' + format.red(title) + '\n'));
     output.push(pad('  ' + format.red(divider) + '\n'));
     output.push(raw);
+    stack && output.push(
+        stack.split('\n').map(function (sl) {return '      ' + sl}).join('\n')
+    );
 
     stream.failed = true;
   });
